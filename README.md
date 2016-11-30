@@ -1,3 +1,3 @@
 # HindiNN
 
-Hindi characters recongition with tensorflow.  
+Hindi characters recognition with tensorflow.  
