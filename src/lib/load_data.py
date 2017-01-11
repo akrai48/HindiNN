@@ -30,7 +30,9 @@ def hindi_all(batch_size=50, min_after_dequeue=100):
     # Decode the image as a JPEG file, this will turn it into a Tensor which we can
     # then use in training.
     image = tf.image.decode_jpeg(image_file)
-    #label_name = tf.string_split(image, '\\')
+
+    # Apparently tensorflow needs to add some fixed-sized metadata to tensor
+    # to be able to use batch function on it
     image.set_shape([28, 28, 1])
 
     capacity = min_after_dequeue + 3 * batch_size
@@ -47,15 +49,7 @@ def hindi_all(batch_size=50, min_after_dequeue=100):
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(coord=coord)
 
-        # Get an image tensor and print its value.
-        """images=[]
-        labels=[]
-        for i in range(18357):
-            label_tensor, image_tensor = sess.run([label, image])
-            drive, label_path_and_file = os.path.splitdrive(str(label_tensor))
-            path, label_name = os.path.split(label_path_and_file)
-            images.append(image_tensor)
-            labels.append(label_name)"""
+        # Run session to get batches of image and label.
         train_image_batch, train_label_batch = sess.run([image_batch, label_batch])
 
         # Finish off the filename queue coordinator.
